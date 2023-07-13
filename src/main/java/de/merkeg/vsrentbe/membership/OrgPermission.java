@@ -13,10 +13,10 @@ public enum OrgPermission {
     CALENDAR_BORROW_ADD("calendar.borrow:add", "Add calendar borrow"),
     CALENDAR_BORROW_MODIFY("calendar.borrow:modify", "Modify calendar borrow"),
     CALENDAR_BORROW_DELETE("calendar.borrow:delete", "Delete calendar borrow"),
-    INVENTORY_VIEW("inventory:view", "View org inventory"),
-    INVENTORY_ADD("inventory:add", "Add Item to inventory"),
-    INVENTORY_MODIFY("inventory:modify", "Modify Item in inventory"),
-    INVENTORY_DELETE("inventory:delete", "Delete Item from inventory");
+    ITEM_VIEW("item:list", "List items to org"),
+    ITEM_ADD("item:add", "Add Item to org"),
+    ITEM_MODIFY("item:modify", "Modify Item in org"),
+    ITEM_DELETE("item:delete", "Delete Item from org");
 
     @Getter
     private final String permission;

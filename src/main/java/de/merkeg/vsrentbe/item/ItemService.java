@@ -1,5 +1,6 @@
 package de.merkeg.vsrentbe.item;
 
+import de.merkeg.vsrentbe.exception.ItemNotFoundException;
 import de.merkeg.vsrentbe.item.dto.ItemRequestDTO;
 import de.merkeg.vsrentbe.org.Organisation;
 import de.merkeg.vsrentbe.user.User;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,5 +36,18 @@ public class ItemService {
 
         itemRepository.save(item);
         return item;
+    }
+
+    public void deleteItem(String itemId){
+        Item item = getItem(itemId);
+        itemRepository.delete(item);
+    }
+
+    public Item getItem(String itemId) {
+        Optional<Item> item = itemRepository.findById(itemId);
+        if(item.isEmpty()) {
+            throw new ItemNotFoundException();
+        }
+        return item.get();
     }
 }

@@ -9,6 +9,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.annotations.UuidGenerator;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -55,6 +58,8 @@ public class User implements UserDetails {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private UserQuota quota;
 
+    @CacheEvict(value = "userAuthorities", allEntries = true)
+    @Scheduled( fixedDelay = 1000 * 30, initialDelay = 500L)
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 

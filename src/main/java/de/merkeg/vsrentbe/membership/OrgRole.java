@@ -2,7 +2,6 @@ package de.merkeg.vsrentbe.membership;
 
 import de.merkeg.vsrentbe.exception.OrgNoPermissionException;
 import de.merkeg.vsrentbe.org.Organisation;
-import de.merkeg.vsrentbe.user.Permission;
 import de.merkeg.vsrentbe.user.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +9,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,17 +18,17 @@ import java.util.stream.Collectors;
 public enum OrgRole {
     ROLE_MEMBER(Set.of(
          OrgPermission.CALENDAR_VIEW,
-         OrgPermission.INVENTORY_VIEW
+         OrgPermission.ITEM_VIEW
     )),
     ROLE_MANAGER(Set.of()),
     ROLE_ADMIN(Set.of(
             OrgPermission.USER_ADD,
             OrgPermission.USER_ROLE,
             OrgPermission.USER_DEL,
-            OrgPermission.INVENTORY_VIEW,
-            OrgPermission.INVENTORY_ADD,
-            OrgPermission.INVENTORY_MODIFY,
-            OrgPermission.INVENTORY_DELETE
+            OrgPermission.ITEM_VIEW,
+            OrgPermission.ITEM_ADD,
+            OrgPermission.ITEM_MODIFY,
+            OrgPermission.ITEM_DELETE
     ));
 
     @Getter

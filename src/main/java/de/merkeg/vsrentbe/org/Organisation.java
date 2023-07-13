@@ -2,12 +2,12 @@ package de.merkeg.vsrentbe.org;
 
 import de.merkeg.vsrentbe.item.Item;
 import de.merkeg.vsrentbe.membership.OrgMembership;
-import de.merkeg.vsrentbe.notification.Notification;
-import de.merkeg.vsrentbe.notification.NotificationType;
 import de.merkeg.vsrentbe.notificationprovider.NotificationProvider;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.*;
-import org.hibernate.annotations.UuidGenerator;
 
 import java.util.Set;
 
