@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.UuidGenerator;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "requests")
@@ -19,19 +19,18 @@ public class Request {
     String id;
 
     @ManyToOne
-    @JoinColumn(name = "requested_item", nullable = false)
-    Item requestedItem;
-
+    @JoinColumn(name = "item_id", nullable = false)
+    Item item;
 
     @ManyToOne
-    @JoinColumn(name = "requesting_user", nullable = false)
-    User requestingUser;
+    @JoinColumn(name = "user_id", nullable = false)
+    User requester;
     String notes;
-    LocalDate startDate;
-    LocalDate endDate;
-    RequestState requestState;
+    LocalDateTime startDate;
+    LocalDateTime endDate;
+    RequestState state;
     String reviewed_by;
-
+    boolean returned;
     @Lob
-    String review_reason;
+    String reasonining;
 }

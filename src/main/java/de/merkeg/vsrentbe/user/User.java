@@ -1,6 +1,7 @@
 package de.merkeg.vsrentbe.user;
 
 import de.merkeg.vsrentbe.auth.RefreshToken;
+import de.merkeg.vsrentbe.item.Item;
 import de.merkeg.vsrentbe.membership.OrgMembership;
 import de.merkeg.vsrentbe.quota.UserQuota;
 import de.merkeg.vsrentbe.request.Request;
@@ -16,7 +17,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -43,11 +45,14 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<OrgMembership> organisations;
 
-    @OneToMany(mappedBy = "requestingUser", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "requester", fetch = FetchType.EAGER)
     private Set<Request> requests;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     Set<RefreshToken> refreshTokens;
+
+    @OneToMany(mappedBy = "creator")
+    Set<Item> createdItems;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private UserQuota quota;

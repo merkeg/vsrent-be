@@ -1,6 +1,7 @@
 package de.merkeg.vsrentbe.exception;
 
 import io.jsonwebtoken.JwtException;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,17 @@ public class GlobalExceptionHandler {
                 .message("Input validation failed")
                 .status(HttpStatus.BAD_REQUEST)
                 .detail(errors)
+                .build();
+        return new ResponseEntity<>(err, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<CustomErrorResponse> handleConstraintValidationErrors(ConstraintViolationException ex) {
+
+        CustomErrorResponse err = CustomErrorResponse.builder()
+                .message("Input validation failed")
+                .status(HttpStatus.BAD_REQUEST)
+                .message(ex.getMessage())
                 .build();
         return new ResponseEntity<>(err, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }

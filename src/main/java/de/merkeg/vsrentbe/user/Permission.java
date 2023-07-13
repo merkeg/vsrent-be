@@ -19,6 +19,7 @@ public enum Permission {
     ORG_DELETE("org:delete", "Delete an organisation"),
     ORG_LIST("org:list", "List Organisations"),
     ORG_INFO("org:info", "Get Organisation info"),
+    ITEM_LIST("item:list", "List Items"),
     SELF_AUTH_INFO("self:auth:info", "Get auth info"),
     MEDIA_UPLOAD("media:upload", "Media upload permissions"),
     MEDIA_DELETE("media:delete", "(own) Media deletion permissions"),

@@ -2,39 +2,40 @@ package de.merkeg.vsrentbe.item;
 
 import de.merkeg.vsrentbe.org.Organisation;
 import de.merkeg.vsrentbe.request.Request;
+import de.merkeg.vsrentbe.user.User;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.util.Set;
 
+@Getter
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "items")
 public class Item {
 
-    @Getter
     @Id
     @GeneratedValue
     @UuidGenerator
     String id;
-
-    @Getter
     String name;
-
-    @Lob
-    @Getter
     String description;
-
-    @Getter
     Integer quantity;
-
-    @Getter
     String imageHandle;
+    boolean enabled;
+
 
     @ManyToOne
     @JoinColumn(name = "organisation_id", nullable = false)
     Organisation organisation;
 
-    @OneToMany(mappedBy = "requestedItem")
+    @OneToMany(mappedBy = "item")
     Set<Request> requests;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    User creator;
 }

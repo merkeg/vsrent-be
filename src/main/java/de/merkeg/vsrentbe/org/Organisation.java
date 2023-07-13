@@ -24,12 +24,8 @@ public class Organisation {
     @GeneratedValue
     @UuidGenerator
     String id;
-
     String name;
-
-    @Lob
     String description;
-
     String imageHandle;
 
     @OneToMany(mappedBy = "organisation")

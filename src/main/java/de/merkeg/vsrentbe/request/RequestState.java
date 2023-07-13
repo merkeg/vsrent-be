@@ -1,7 +1,7 @@
 package de.merkeg.vsrentbe.request;
 
 public enum RequestState {
-    INBOX,
+    REQUESTED,
     ACCEPTED,
     DECLINED
 }

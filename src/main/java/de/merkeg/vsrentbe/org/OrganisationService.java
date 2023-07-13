@@ -35,10 +35,15 @@ public class OrganisationService {
     }
 
     public OrgInfoDTO getOrgInfo(String orgId) {
+        return OrganisationMapper.INSTANCE.orgToInfoDTO(getOrg(orgId));
+    }
+
+    public Organisation getOrg(String orgId) {
         Optional<Organisation> org = organisationRepository.findById(orgId);
         if(org.isEmpty()) {
             throw new OrgNotFoundException();
         }
-        return OrganisationMapper.INSTANCE.orgToInfoDTO(org.get());
+        return org.get();
     }
+
 }

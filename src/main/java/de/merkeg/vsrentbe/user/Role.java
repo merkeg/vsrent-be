@@ -11,19 +11,26 @@ import java.util.stream.Collectors;
 public enum Role {
 
     ROLE_USER(Set.of(
+            Permission.SELF_AUTH_INFO,
             Permission.ORG_LIST,
             Permission.ORG_INFO,
-            Permission.SELF_AUTH_INFO,
             Permission.MEDIA_UPLOAD,
-            Permission.MEDIA_DELETE
+            Permission.MEDIA_DELETE,
+            Permission.ITEM_LIST
+    )),
+    ROLE_MANAGER(Set.of(
+
     )),
     ROLE_ADMIN(Set.of(
-            Permission.ORG_CREATE,
             Permission.SELF_AUTH_INFO,
+            Permission.ORG_CREATE,
             Permission.ORG_LIST,
             Permission.ORG_INFO,
+            Permission.ORG_DELETE,
             Permission.ADMIN_ORG_MANAGE,
-            Permission.ORG_DELETE
+            Permission.MEDIA_UPLOAD,
+            Permission.MEDIA_DELETE,
+            Permission.ITEM_LIST
     ));
     @Getter
     private final Set<Permission> permissions;
