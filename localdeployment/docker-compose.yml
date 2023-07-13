@@ -1,0 +1,24 @@
+version: "3.3"
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: vs
+      POSTGRES_USER: vs
+      POSTGRES_DB: vsrent
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - "./postgres-data:/var/lib/postgresql/data/pgdata"
+    ports:
+      - "5432:5432"
+  s3:
+    image: minio/minio
+    environment:
+      MINIO_ROOT_USER: vsadmin
+      MINIO_ROOT_PASSWORD: thisisapassword
+    volumes:
+      - "./s3-data:/data"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    command: server /data --console-address ":9001"
