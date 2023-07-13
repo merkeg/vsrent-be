@@ -1,6 +1,7 @@
 package de.merkeg.vsrentbe.org.dto;
 
 import de.merkeg.vsrentbe.item.Item;
+import de.merkeg.vsrentbe.item.dto.ItemDTO;
 import de.merkeg.vsrentbe.membership.OrgMembership;
 import de.merkeg.vsrentbe.membership.dto.OrgMembershipDTO;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,6 @@ public class OrgInfoDTO {
     String name;
     String description;
     String imageHandle;
-    Set<Item> items;
+    Set<ItemDTO> items;
     Set<OrgMembershipDTO> members;
 }

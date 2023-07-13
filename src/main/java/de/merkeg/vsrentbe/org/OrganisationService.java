@@ -7,6 +7,7 @@ import de.merkeg.vsrentbe.membership.OrgRole;
 import de.merkeg.vsrentbe.org.dto.OrgCreationRequestDTO;
 import de.merkeg.vsrentbe.org.dto.OrgInfoDTO;
 import de.merkeg.vsrentbe.user.User;
+import de.merkeg.vsrentbe.util.Base58;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ public class OrganisationService {
 
     public OrgInfoDTO createOrganisation(User owner, OrgCreationRequestDTO creationRequestDTO){
         Organisation org = Organisation.builder()
+                .id(Base58.uuid58())
                 .name(creationRequestDTO.getName())
                 .description(creationRequestDTO.getDescription())
                 .imageHandle(creationRequestDTO.getImageHandle()).build();

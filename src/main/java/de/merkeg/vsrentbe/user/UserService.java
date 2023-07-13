@@ -10,6 +10,7 @@ import de.merkeg.vsrentbe.exception.UserDoesNotExistException;
 import de.merkeg.vsrentbe.quota.UserQuota;
 import de.merkeg.vsrentbe.quota.UserQuotaRepository;
 import de.merkeg.vsrentbe.security.JwtService;
+import de.merkeg.vsrentbe.util.Base58;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,7 @@ public class UserService {
         }
 
         User newUser = User.builder()
+                .id(Base58.uuid58())
                 .fullName(data.getFullName())
                 .phoneNumber(data.getPhoneNumber())
                 .email(data.getEmail())

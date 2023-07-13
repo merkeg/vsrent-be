@@ -28,8 +28,6 @@ import java.util.stream.Collectors;
 public class User implements UserDetails {
     @Getter
     @Id
-    @GeneratedValue
-    @UuidGenerator
     private String id;
     private String username; // Username only present on rwu login
     private String fullName;

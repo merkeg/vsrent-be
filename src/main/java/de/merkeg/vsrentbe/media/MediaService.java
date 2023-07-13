@@ -6,6 +6,7 @@ import de.merkeg.vsrentbe.media.dto.MediaMetadataDTO;
 import de.merkeg.vsrentbe.quota.UserQuotaService;
 import de.merkeg.vsrentbe.user.User;
 
+import de.merkeg.vsrentbe.util.Base58;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
@@ -40,7 +41,7 @@ public class MediaService {
 
     @SneakyThrows
     public String uploadMedia(MultipartFile file, String altText, User owner) {
-        String uuid = UUID.randomUUID().toString();
+        String id = Base58.uuid58();
 
         if((file.getSize() + owner.getQuota().getUsedQuota()) > owner.getQuota().getMaxQuota()) {
             throw new QuotaExceededException();
@@ -50,21 +51,21 @@ public class MediaService {
         ownMetadata.put("owner", owner.getId());
         ownMetadata.put("alt", altText);
 
-        log.debug("Starting media upload for file '{}' with object id '{}' from user {}", file.getOriginalFilename(), uuid, owner.getId());
+        log.debug("Starting media upload for file '{}' with object id '{}' from user {}", file.getOriginalFilename(), id, owner.getId());
 
         PutObjectRequest request = PutObjectRequest.builder()
                 .bucket(s3Bucket)
-                .key(uuid)
+                .key(id)
                 .contentType(file.getContentType())
                 .metadata(ownMetadata)
                 .tagging(Tagging.builder().tagSet(Tag.builder().key("owner").value(owner.getId()).build()).build())
                 .build();
         s3Client.putObject(request, RequestBody.fromInputStream(file.getInputStream(), file.getInputStream().available()));
-        log.debug("Finished media upload for file '{}' with object id '{}' from user {}", file.getOriginalFilename(), uuid, owner.getId());
+        log.debug("Finished media upload for file '{}' with object id '{}' from user {}", file.getOriginalFilename(), id, owner.getId());
         userQuotaService.addToQuota(owner, file.getSize());
 
 
-        return uuid;
+        return id;
     }
 
     public ResponseInputStream<GetObjectResponse> downloadMedia(String uuid) {

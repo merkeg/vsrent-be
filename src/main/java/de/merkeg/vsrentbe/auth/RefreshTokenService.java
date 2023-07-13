@@ -62,8 +62,6 @@ public class RefreshTokenService {
     }
 
     private String createUniqueString() {
-        String unique = UUID.randomUUID().toString() + UUID.randomUUID();
-        unique = unique.replace("-", "");
-        return unique;
+        return RandomStringUtils.randomAlphabetic(64);
     }
 }

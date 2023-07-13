@@ -21,8 +21,6 @@ import java.util.Set;
 public class Organisation {
     @Getter
     @Id
-    @GeneratedValue
-    @UuidGenerator
     String id;
     String name;
     String description;
