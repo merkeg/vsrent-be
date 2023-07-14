@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -33,6 +34,28 @@ public class ItemService {
                 .name(itemRequestDTO.getName())
                 .quantity(itemRequestDTO.getQuantity())
                 .build();
+
+        itemRepository.save(item);
+        return item;
+    }
+
+    public Item updateItem(Item item, ItemRequestDTO requestDTO) {
+
+        if(!Objects.equals(requestDTO.getName(), item.getName())) {
+            item.setName(requestDTO.getName());
+        }
+
+        if(!Objects.equals(requestDTO.getDescription(), item.getDescription())) {
+            item.setDescription(requestDTO.getDescription());
+        }
+
+        if(!Objects.equals(requestDTO.getImageHandle(), item.getImageHandle())) {
+            item.setImageHandle(requestDTO.getImageHandle());
+        }
+
+        if(!requestDTO.getQuantity().equals(item.getQuantity())) {
+            item.setQuantity(requestDTO.getQuantity());
+        }
 
         itemRepository.save(item);
         return item;

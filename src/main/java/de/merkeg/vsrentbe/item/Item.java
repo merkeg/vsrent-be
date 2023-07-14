@@ -10,6 +10,7 @@ import org.hibernate.annotations.UuidGenerator;
 import java.util.Set;
 
 @Getter
+@Setter
 @Entity
 @Builder
 @NoArgsConstructor

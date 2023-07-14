@@ -75,12 +75,13 @@ public class ItemResource {
     @PutMapping("/{orgId}/{itemId}")
     @PreAuthorize("isAuthenticated()")
     @Operation(summary = "Update item information")
-    public void updateItem(@PathVariable String itemId, @PathVariable String orgId, @RequestBody @Valid ItemRequestDTO itemRequestDTO, Authentication authentication) {
+    public ResponseEntity<ItemDTO> updateItem(@PathVariable String itemId, @PathVariable String orgId, @RequestBody @Valid ItemRequestDTO itemRequestDTO, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         Organisation organisation = organisationService.getOrg(orgId);
         OrgRole.throwOnNoOrgPermission(user, organisation, OrgPermission.ITEM_MODIFY);
         Item item = itemService.getItem(itemId);
-
+        item = itemService.updateItem(item, itemRequestDTO);
+        return ResponseEntity.ok(ItemMapper.INSTANCE.mapToDTO(item));
     }
 
     @DeleteMapping("/{orgId}/{itemId}")
