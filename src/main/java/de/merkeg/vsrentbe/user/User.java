@@ -1,6 +1,7 @@
 package de.merkeg.vsrentbe.user;
 
 import de.merkeg.vsrentbe.auth.RefreshToken;
+import de.merkeg.vsrentbe.confirmation.Confirmation;
 import de.merkeg.vsrentbe.item.Item;
 import de.merkeg.vsrentbe.membership.OrgMembership;
 import de.merkeg.vsrentbe.quota.UserQuota;
@@ -38,6 +39,7 @@ public class User implements UserDetails {
     private String phoneNumber;
     private String password;
     private boolean locked;
+    private boolean emailVerified;
     @Enumerated(EnumType.STRING)
     private UserRegistrationType registrationType;
     @Enumerated(EnumType.STRING)
@@ -54,6 +56,9 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "creator")
     Set<Item> createdItems;
+
+    @OneToMany(mappedBy = "targetUser")
+    Set<Confirmation> confirmations;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private UserQuota quota;
@@ -102,6 +107,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return emailVerified;
     }
 }

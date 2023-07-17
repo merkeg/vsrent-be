@@ -22,9 +22,9 @@ public enum OrgRole {
     )),
     ROLE_MANAGER(Set.of()),
     ROLE_ADMIN(Set.of(
-            OrgPermission.USER_ADD,
-            OrgPermission.USER_ROLE,
-            OrgPermission.USER_DEL,
+            OrgPermission.MEMBER_ADD,
+            OrgPermission.MEMBER_ROLE,
+            OrgPermission.MEMBER_DELETE,
             OrgPermission.ITEM_VIEW,
             OrgPermission.ITEM_ADD,
             OrgPermission.ITEM_MODIFY,

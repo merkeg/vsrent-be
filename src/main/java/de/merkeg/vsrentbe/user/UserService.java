@@ -4,6 +4,8 @@ import de.merkeg.vsrentbe.auth.RefreshTokenService;
 import de.merkeg.vsrentbe.auth.dto.TokenDTO;
 import de.merkeg.vsrentbe.auth.dto.UserLoginGuestDTO;
 import de.merkeg.vsrentbe.auth.dto.UserRegisterGuestDTO;
+import de.merkeg.vsrentbe.confirmation.ConfirmationService;
+import de.merkeg.vsrentbe.confirmation.Process;
 import de.merkeg.vsrentbe.exception.PasswordDoesNotMatchException;
 import de.merkeg.vsrentbe.exception.UserAlreadyExistsException;
 import de.merkeg.vsrentbe.exception.UserDoesNotExistException;
@@ -27,6 +29,7 @@ public class UserService {
     private final JwtService jwtService;
     private final RefreshTokenService refreshTokenService;
     private final UserQuotaRepository userQuotaRepository;
+    private final ConfirmationService confirmationService;
 
     public boolean userWithEmailAlreadyExists(String email) {
         return userRepository.findByEmail(email).isPresent();
@@ -45,6 +48,8 @@ public class UserService {
                 .registrationType(UserRegistrationType.GUEST)
                 .password(passwordEncoder.encode(data.getPassword()))
                 .role(Role.ROLE_USER)
+                .locked(false)
+                .emailVerified(false)
                 .build();
 
         UserQuota quota = UserQuota.builder()
@@ -81,6 +86,12 @@ public class UserService {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
+    }
+
+    public void verifyEmail(User user) {
+        user.setEmailVerified(true);
+        confirmationService.userDeleteAllFromProcess(Process.REGISTRATION_EMAIL, user);
+        userRepository.save(user);
     }
 
 

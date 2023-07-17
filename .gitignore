@@ -37,3 +37,4 @@ out/
 .vscode/
 
 localdeployment/*-data
+*dev.properties

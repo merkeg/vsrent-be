@@ -1,6 +1,7 @@
 package de.merkeg.vsrentbe.org;
 
 import de.merkeg.vsrentbe.exception.OrgNotFoundException;
+import de.merkeg.vsrentbe.exception.UserNotInOrganisationException;
 import de.merkeg.vsrentbe.membership.OrgMembership;
 import de.merkeg.vsrentbe.membership.OrgMembershipRepository;
 import de.merkeg.vsrentbe.membership.OrgRole;
@@ -47,5 +48,25 @@ public class OrganisationService {
         }
         return org.get();
     }
+
+    public void deleteOrganisation(Organisation organisation) {
+        orgMembershipRepository.deleteAll(organisation.getMembers());
+        organisationRepository.delete(organisation);
+    }
+
+    public void leaveOrganisation(Organisation org, User user) {
+        OrgMembership membership = findMembership(org, user);
+        orgMembershipRepository.delete(membership);
+    }
+
+    public OrgMembership findMembership(Organisation organisation, User user) {
+        Optional<OrgMembership> membership = organisation.getMembers().stream().filter(p -> p.getUser() == user).findAny();
+        if(membership.isEmpty()) {
+            throw new UserNotInOrganisationException();
+        }
+        return membership.get();
+    }
+
+
 
 }

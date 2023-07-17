@@ -4,6 +4,9 @@ import de.merkeg.vsrentbe.auth.dto.RefreshTokenRequestDTO;
 import de.merkeg.vsrentbe.auth.dto.TokenDTO;
 import de.merkeg.vsrentbe.auth.dto.UserLoginGuestDTO;
 import de.merkeg.vsrentbe.auth.dto.UserRegisterGuestDTO;
+import de.merkeg.vsrentbe.mail.EmailService;
+import de.merkeg.vsrentbe.mail.EmailTemplate;
+import de.merkeg.vsrentbe.mail.EmailVariables;
 import de.merkeg.vsrentbe.membership.dto.OrgMembershipMapper;
 import de.merkeg.vsrentbe.user.User;
 import de.merkeg.vsrentbe.user.UserService;
@@ -33,6 +36,7 @@ public class AuthenticationResource {
 
     private final UserService userService;
     private final RefreshTokenService refreshTokenService;
+    private final EmailService emailService;
 
     @PostMapping("/login/guest")
     @Operation(summary = "Login with guest credentials")
@@ -44,7 +48,14 @@ public class AuthenticationResource {
     @Operation(summary = "Register with credentials")
     public ResponseEntity<String> register(@Valid @RequestBody UserRegisterGuestDTO body) throws URISyntaxException {
         User newUser = userService.registerUser(body);
-        return ResponseEntity.created(new URI("/v1/users/"+newUser.getId())).body("Registered user with new id: "+ newUser.getId());
+        emailService.sendConfirmationEmail(newUser);
+        return ResponseEntity.created(new URI("/v1/users/"+newUser.getId())).body("");
+    }
+
+    @PostMapping("/register/resend")
+    @Operation(summary = "Resend registration E-Mail")
+    public void resend() {
+
     }
 
     @PostMapping("/refresh")
@@ -62,7 +73,6 @@ public class AuthenticationResource {
         UserDTO dto = UserMapper.INSTANCE.userToInfoDTO(user);
         return ResponseEntity.ok(dto);
     }
-
 
 
 }

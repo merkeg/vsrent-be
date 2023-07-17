@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<p th:text="#{greetings(${name})}">Hallo NUTZER,</p>
+<p th:text="#{registrationText(${registrationUrl})}">Zum Abschließen der Registrierung folge bitte dem Link:</p>
+<p th:text="${registrationUrl}">https://rent.vs.rwu.de/registration/submit/sdfsdhgjosfnhju</p>
+<p th:text="#{regards}">Viele Grüße von der Verfassten Studierendenschaft</p>
+<p>----</p>
+<p>
+    Verfassten Studierendenschaft der<br/> <b>Hochschule Ravensburg</b> <br/>
+    Raum C 116<br />
+    Doggenriedstraße<br />
+    88250 Weingarten
+</p>
+</body>
+</html>

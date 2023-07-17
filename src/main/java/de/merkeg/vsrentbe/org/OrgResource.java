@@ -1,13 +1,17 @@
 package de.merkeg.vsrentbe.org;
 
+import de.merkeg.vsrentbe.membership.OrgPermission;
+import de.merkeg.vsrentbe.membership.OrgRole;
 import de.merkeg.vsrentbe.org.dto.OrgCreationRequestDTO;
 import de.merkeg.vsrentbe.org.dto.OrgInfoDTO;
 import de.merkeg.vsrentbe.user.User;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +39,54 @@ public class OrgResource {
     @GetMapping("/list")
     @PreAuthorize("hasAuthority('org:list')")
     public OrgInfoDTO[] getOrgs() {
+        // #TODO
         return null;
+    }
+
+    @PutMapping("/{orgId}")
+    @PreAuthorize("isAuthenticated()")
+    public void editOrg(@PathVariable String orgId){
+        // TODO
+    }
+
+    @DeleteMapping("/{orgId}")
+    @PreAuthorize("isAuthenticated()")
+    public void deleteOrg(Authentication authentication, @PathVariable String orgId) {
+        User user = (User) authentication.getPrincipal();
+        Organisation organisation = organisationService.getOrg(orgId);
+        OrgRole.throwOnNoOrgPermission(user, organisation, OrgPermission.ORG_DELETE);
+
+        organisationService.deleteOrganisation(organisation);
+    }
+
+    @PostMapping("/{orgId}/members")
+    @PreAuthorize("isAuthenticated()")
+    @Operation(summary = "Invite member to the organisation")
+    public void inviteMember(){
+
+    }
+
+    @PutMapping("/{orgId}/members/{userId}")
+    @PreAuthorize("isAuthenticated()")
+    @Operation(summary = "Set role of a member")
+    public void setMemberRole() {
+
+    }
+
+    @DeleteMapping("/{orgId}/members/{userId}")
+    @PreAuthorize("isAuthenticated()")
+    @Operation(summary = "Remove a member from the organisation")
+    public void removeMember() {
+
+    }
+
+    @PostMapping("/{orgId}/leave")
+    @PreAuthorize("isAuthenticated()")
+    @Operation(summary = "Leave the organisation")
+    public void leaveOrg(Authentication authentication, @PathVariable String orgId) {
+        User user = (User) authentication.getPrincipal();
+        Organisation organisation = organisationService.getOrg(orgId);
+        organisationService.leaveOrganisation(organisation, user);
     }
 
 }
