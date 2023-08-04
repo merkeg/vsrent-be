@@ -1,5 +1,9 @@
 package de.merkeg.vsrentbe.confirmation;
 
+import de.merkeg.vsrentbe.confirmation.processors.ConfirmationProcessors;
+import de.merkeg.vsrentbe.confirmation.processors.ConfirmationResult;
+import de.merkeg.vsrentbe.exception.ConfirmationNotFoundException;
+import de.merkeg.vsrentbe.exception.InvalidSecretTokenException;
 import de.merkeg.vsrentbe.user.User;
 import de.merkeg.vsrentbe.util.Base58;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +31,9 @@ public class ConfirmationService {
                 .targetUser(user)
                 .processorData(null)
                 .secretToken(RandomStringUtils.randomAlphanumeric(32))
+                .process(Process.REGISTRATION_EMAIL)
                 .build();
+        processors.getProcessor(Process.REGISTRATION_EMAIL).preData(confirmation, this);
         confirmationRepository.save(confirmation);
         return confirmation;
     }
@@ -48,6 +54,24 @@ public class ConfirmationService {
                 .filter(p -> p.getProcess() == Process.REGISTRATION_EMAIL)
                 .toList();
         confirmationRepository.deleteAll(confirmations);
+    }
+
+    public void confirm(String confirmationId, String secretToken) {
+        Confirmation confirmation = getConfirmation(confirmationId);
+
+        if(!confirmation.getSecretToken().equals(secretToken)) {
+            throw new InvalidSecretTokenException();
+        }
+
+        processors.getProcessor(confirmation.getProcess()).process(confirmation, this, ConfirmationResult.ACCEPT);
+    }
+
+    public Confirmation getConfirmation(String confirmationId) {
+        Optional<Confirmation> confirmation = confirmationRepository.findById(confirmationId);
+        if(confirmation.isEmpty()) {
+            throw new ConfirmationNotFoundException();
+        }
+        return confirmation.get();
     }
 
 

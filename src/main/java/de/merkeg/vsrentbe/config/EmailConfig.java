@@ -1,4 +1,4 @@
-package de.merkeg.vsrentbe.mail;
+package de.merkeg.vsrentbe.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +10,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 import java.nio.charset.StandardCharsets;
 
 @Configuration
-public class EmailConfiguration {
+public class EmailConfig {
 
     @Bean
     public ITemplateResolver templateResolver() {

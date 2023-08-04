@@ -1,5 +1,6 @@
-package de.merkeg.vsrentbe.confirmation;
+package de.merkeg.vsrentbe.confirmation.processors;
 
+import de.merkeg.vsrentbe.confirmation.Process;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
